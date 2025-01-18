@@ -66,3 +66,8 @@ def divide_into_grid(image, rows, cols):
             y_end = y_start + box_height
             grid.append(image[y_start:y_end, x_start:x_end])
     return grid
+
+
+@app.get("/")
+async def landing_page():
+    return "The server is live!"

@@ -2,7 +2,7 @@ import os
 import requests
 
 # Server URL
-url = "https://sudoku-solver-app-v0gc.onrender.com/process-image"  # Replace with your deployed server URL if necessary
+url = "https://sudoku-solver-app-v0gc.onrender.com/process-image"
 
 # Resolve the image path
 current_directory = os.path.dirname(os.path.abspath(__file__))

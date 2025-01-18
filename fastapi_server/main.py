@@ -23,3 +23,7 @@ async def process_image(file: UploadFile = File(...)):
         "message": "Image processed successfully"
     }
 
+@app.get("/")
+async def read_root():
+    return {"status": "ok", "message": "Server is online and working"}
+

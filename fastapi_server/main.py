@@ -13,17 +13,15 @@ async def process_image(file: UploadFile = File(...)):
     
     # Generate a fake Sudoku solution with 81 numbers
     solution = list(range(1, 82))
-
-    # Convert the solution to a string to include in headers
     solution_str = ",".join(map(str, solution))
 
-    # Return the actual solution as a string and update the message
+    # Return solution in the response body
     return {
         "filename": file.filename,
         "content_type": file.content_type,
         "solution": solution_str,
-        "message": "Image processed and fake Sudoku solution generated successfully",
-    }, {"X-Sudoku-Solution": solution_str}
+        "message": "Image processed successfully"
+    }
 
 @app.get("/")
 async def landing_page():

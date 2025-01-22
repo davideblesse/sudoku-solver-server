@@ -5,3 +5,4 @@ Pillow
 python-multipart
 numpy
 opencv-python
+pytesseract

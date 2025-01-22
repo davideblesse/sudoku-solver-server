@@ -1,8 +1,7 @@
 import io
 from fastapi import FastAPI, File, UploadFile
-from PIL import Image
-import numpy as np
-import cv2
+from preprocessing.recognize_digits import recognize_digits
+from preprocessing.sudoku_preprocessing import process_sudoku_image
 
 app = FastAPI()
 
@@ -12,8 +11,9 @@ async def process_image(file: UploadFile = File(...)):
     file_bytes = await file.read()
     
     # Generate a fake Sudoku solution with 81 numbers
-    solution = list(range(1, 82))
-    solution_str = ",".join(map(str, solution))
+    processed_cells = process_sudoku_image(file_bytes)
+    recognized_digits = recognize_digits(processed_cells)
+    solution_str = ",".join(map(str, recognized_digits))
 
     # Return solution in the response body
     return {

@@ -1,0 +1,11 @@
+Metadata-Version: 2.2
+Name: sudoku_server
+Version: 0.1.0
+Summary: A Sudoku solver server with preprocessing and OCR.
+Author-email: Your Name <your_email@example.com>
+Requires-Dist: opencv-python
+Requires-Dist: numpy
+Requires-Dist: pytesseract
+Requires-Dist: fastapi
+Provides-Extra: testing
+Requires-Dist: pytest; extra == "testing"

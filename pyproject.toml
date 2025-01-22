@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sudoku_server"
+version = "0.1.0"
+description = "A Sudoku solver server with preprocessing and OCR."
+authors = [
+    { name = "Your Name", email = "your_email@example.com" }
+]
+dependencies = [
+    "opencv-python",
+    "numpy",
+    "pytesseract",
+    "fastapi"
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest"
+]
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.package-data]
+"sudoku_server" = ["**/*.py"]

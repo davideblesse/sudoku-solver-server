@@ -11,28 +11,26 @@ async def process_image(file: UploadFile = File(...)):
     # Read the file into memory
     file_bytes = await file.read()
 
-    # Open the image with Pillow
-    image = Image.open(io.BytesIO(file_bytes))
+    solution = []
+    # Generate a fake Sudoku solution with 81 numbers
+    solution = list(range(1, 82))
 
-    # Convert the Pillow image to an OpenCV-compatible format (NumPy array)
-    cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    # Convert the solution to a string to include in headers
+    solution_str = ",".join(map(str, solution))
 
-    # Ensure the image is square (crop or resize)
-    square_image = make_square(cv_image)
-
-    # Divide the square image into a 9x9 grid (81 boxes)
-    grid = divide_into_grid(square_image, 9, 9)
-
-    # Debugging: Save the grid boxes as separate images (optional)
-    for idx, box in enumerate(grid):
-        cv2.imwrite(f"box_{idx + 1}.png", box)
+    # Return the actual solution as a string and update the message
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "solution": solution_str,
+        "message": "Image processed and fake Sudoku solution generated successfully",
+    }, {"X-Sudoku-Solution": solution_str}
 
     # Return the number of boxes and dimensions for confirmation
     return {
         "filename": file.filename,
         "content_type": file.content_type,
-        "grid_boxes": len(grid),
-        "box_dimensions": f"{grid[0].shape[0]}x{grid[0].shape[1]}",
+        "solution": len(solution),
         "message": "Image processed and divided into 81 boxes successfully",
     }
 

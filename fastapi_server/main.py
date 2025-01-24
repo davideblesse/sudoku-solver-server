@@ -5,6 +5,10 @@ from preprocessing.sudoku_preprocessing import process_sudoku_image
 
 app = FastAPI()
 
+# Pydantic model to receive a text/string field
+class TextModel(BaseModel):
+    message: str
+
 @app.post("/process-image")
 async def process_image(file: UploadFile = File(...)):
     # Read the file into memory
@@ -28,6 +32,20 @@ async def process_image(file: UploadFile = File(...)):
         "content_type": file.content_type,
         "solution": solution_str,
         "message": "Image processed successfully"
+    }
+
+@app.post("/solve-sudoku")
+async def echo_message(data: TextModel):
+    """
+    This endpoint echoes back whatever string is sent in the request body.
+
+    Example client request body (JSON):
+    {
+        "message": "Hello, world!"
+    }
+    """
+    return {
+        "received_message": data.message
     }
 
 @app.get("/")

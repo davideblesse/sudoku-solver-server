@@ -2,6 +2,7 @@ import tempfile
 from fastapi import FastAPI, File, UploadFile
 from preprocessing.recognize_digits import recognize_digits
 from preprocessing.sudoku_preprocessing import process_sudoku_image
+from pydantic import BaseModel
 
 app = FastAPI()
 

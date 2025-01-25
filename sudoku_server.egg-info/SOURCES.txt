@@ -1,4 +1,7 @@
 pyproject.toml
+docker_tests/docker_webservice_live.py
+docker_tests/post_test_docker.py
+docker_tests/solve_sudoku_test.py
 fastapi_server/__init__.py
 fastapi_server/main.py
 preprocessing/__init__.py
@@ -9,8 +12,14 @@ sudoku_server.egg-info/SOURCES.txt
 sudoku_server.egg-info/dependency_links.txt
 sudoku_server.egg-info/requires.txt
 sudoku_server.egg-info/top_level.txt
+sudoku_solver/__init__.py
+sudoku_solver/search.py
+sudoku_solver/sudoku_solver.py
+sudoku_solver/utils.py
 tests/__init__.py
+tests/post_to_local_server.py
 tests/post_to_server_test.py
 tests/preprocessing_and_recognition_test.py
 tests/server_online_test.py
+tests/sudoku_solver_test.py
 tests/tesseract_check.py

@@ -1,5 +1,5 @@
-from sudoku_solver.sudoku_solver import Sudoku, SudokuNode
-from sudoku_solver.search import depth_first_graph_search
+from sudoku_solver.sudoku_solver import *
+from sudoku_solver.search import *
 
 def main():
     initial_state = tuple(tuple(row) for row in [

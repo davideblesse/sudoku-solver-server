@@ -5,6 +5,7 @@ from preprocessing.sudoku_preprocessing import process_sudoku_image
 from pydantic import BaseModel
 from sudoku_solver.sudoku_solver import Sudoku
 from sudoku_solver.search import depth_first_graph_search
+from fastapi_server.timeout import timeout
 
 app = FastAPI()
 
@@ -38,6 +39,7 @@ async def process_image(file: UploadFile = File(...)):
     }
 
 @app.post("/solve-sudoku")
+@timeout(60)
 async def solve_sudoku(data: TextModel):
     puzzle_string = data.message.strip()  # Ensure no extra spaces/newlines
 

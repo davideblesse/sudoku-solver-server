@@ -1,4 +1,4 @@
-from search import *
+from sudoku_solver.search import *
 
 class Sudoku(Problem):
     def __init__(self, initial):
@@ -98,51 +98,6 @@ class Sudoku(Problem):
         """
         return all(all(value != 0 for value in row) for row in state)
 
-
-class SudokuNode(Node):
-    def __str__(self):
-        """
-        Returns a string representation of the Sudoku grid in a formatted layout.
-        """
-        grid = ""
-        for i, row in enumerate(self.state):  # No need to convert rows; iterate over tuples directly
-            # Format each row, replacing 0 with '.'
-            row_str = " ".join(str(num) if num != 0 else "." for num in row)
-            # Add 3x3 block separators
-            grid += row_str[:5] + " | " + row_str[6:11] + " | " + row_str[12:] + "\n"
-            
-            # Add horizontal separators after every 3rd row (blocks)
-            if i in [2, 5]:
-                grid += "-" * 21 + "\n"
-        return grid
-        
-
-def main():
-    initial_state = tuple(tuple(row) for row in [
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    ])
-
-    
-    problem = Sudoku(initial_state)
-
-    # Solve the problem using a search function (you need to import or implement it)
-    solution = depth_first_graph_search(problem)
-
-    if solution:
-        print(SudokuNode(solution.path()[-1].state))
-    else:
-        print("No solution found.")
-
-if __name__ == "__main__":
-    main()
 
 
     

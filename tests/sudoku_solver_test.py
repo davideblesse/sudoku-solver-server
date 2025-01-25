@@ -14,13 +14,20 @@ def main():
         [0, 0, 0, 0, 8, 0, 0, 7, 9]
     ])
 
+    print(type(initial_state))
+    print(type(initial_state[0]))
+    print(type(initial_state[0][0]))
+
     problem = Sudoku(initial_state)
 
     # Solve the problem using a search function (you need to import or implement it)
     solution = depth_first_graph_search(problem)
 
     if solution:
-        print(SudokuNode(solution.path()[-1].state))
+        print(type(solution.path()[-1].state))
+        print(type(solution.path()[-1].state[0]))
+        print(type(solution.path()[-1].state[0][0]))
+        print(solution.path()[-1].state)
     else:
         print("No solution found.")
 

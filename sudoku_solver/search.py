@@ -9,7 +9,7 @@ functions.
 import sys
 from collections import deque
 
-from utils import *
+from sudoku_solver.utils import *
 
 
 class Problem:

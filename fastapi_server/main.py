@@ -1,5 +1,5 @@
 import tempfile
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from preprocessing.recognize_digits import recognize_digits
 from preprocessing.sudoku_preprocessing import process_sudoku_image
 from pydantic import BaseModel
@@ -39,59 +39,32 @@ async def process_image(file: UploadFile = File(...)):
 
 @app.post("/solve-sudoku")
 async def solve_sudoku(data: TextModel):
-    """
-    This endpoint expects data.message to be a single string of digits
-    representing each row of the Sudoku puzzle back-to-back.
+    puzzle_string = data.message.strip()  # Ensure no extra spaces/newlines
 
-    For a standard 9x9 Sudoku, it should be exactly 81 digits long:
-      - Digits 1-9 = Row 1
-      - Digits 10-18 = Row 2
-      ...
-      - Digits 73-81 = Row 9
+    # Step 1: Validate the input
+    if len(puzzle_string) != 81:
+        raise HTTPException(status_code=400, detail="Invalid input length. Must be exactly 81 characters.")
+    
+    if not puzzle_string.isdigit():
+        raise HTTPException(status_code=400, detail="Invalid input. Must contain only numeric characters (0-9).")
 
-    Example of a (nonsensical) 9x9 with 81 digits:
-      "530070000600195000098000060800060003400803001700020006006000280000419005000080079"
-    """
+    # Step 2: Convert the string into a tuple of tuples
+    initial_state = tuple(
+        tuple(int(puzzle_string[i * 9 + j]) for j in range(9)) for i in range(9)
+    )
 
-    puzzle_string = data.message.strip()  # Remove extra spaces/newlines if present
-    length = len(puzzle_string)
-
-    # Validate puzzle length (36 if you expect a 4x9, 81 for a 9x9, etc.)
-    # If your test uses 36, you'll either handle it or show an error.
-    if length % 9 != 0:
-        return {"error": f"Invalid length {length}. Length must be a multiple of 9."}
-
-    row_count = length // 9
-    # If you specifically want a 9x9 Sudoku, enforce row_count == 9:
-    # if row_count != 9:
-    #     return {"error": f"Invalid row count {row_count}. Expected 9 rows for a 9x9 Sudoku."}
-
-    # Convert the string into a list of rows (each row is a list of int)
-    parsed_rows = []
-    for i in range(row_count):
-        row_str = puzzle_string[i*9 : (i+1)*9]  # chunk of 9 digits
-        row = [int(ch) for ch in row_str]
-        parsed_rows.append(row)
-
-    # Turn the list of lists into a tuple of tuples
-    initial_state = tuple(tuple(r) for r in parsed_rows)
-
-    # Solve the Sudoku
+    # Step 3: Solve the Sudoku
     problem = Sudoku(initial_state)
     solution_node = depth_first_graph_search(problem)
-    
+
     if not solution_node:
-        return {"error": "No solution found for the given puzzle."}
+        raise HTTPException(status_code=400, detail="No solution found for the given puzzle.")
 
-    final_state = solution_node.path()[-1].state  # tuple of tuples
+    # Step 4: Convert the solution to a single string
+    final_state = solution_node.path()[-1].state
+    solution_string = "".join(str(num) for row in final_state for num in row)
 
-    # Convert final_state back to a single string of digits
-    # (row 1's digits, then row 2's digits, etc.)
-    solution_str = ""
-    for row in final_state:
-        solution_str += "".join(str(n) for n in row)
-
-    return {"solution": solution_str}
+    return {"solution": solution_string}
 
 @app.get("/")
 async def landing_page():

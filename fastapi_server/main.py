@@ -28,7 +28,7 @@ async def process_image(file: UploadFile = File(...)):
 
     # Recognize digits from the processed cells
     recognized_digits = recognize_digits(processed_cells)
-    solution_str = ",".join(map(str, recognized_digits))
+    solution_str = "".join(map(str, recognized_digits))
 
     # Return solution in the response body
     return {
@@ -67,6 +67,30 @@ async def solve_sudoku(data: TextModel):
     solution_string = "".join(str(num) for row in final_state for num in row)
 
     return {"solution": solution_string}
+
+@app.post("/process-image-test")
+async def process_image_test(file: UploadFile = File(...)):
+    """
+    Simulated version of `process-image` for testing.
+    Accepts an image but does not process it. Instead, returns a dummy response.
+    """
+    # Read the file to simulate processing
+    await file.read()
+
+    # Return dummy response with expected format
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "solution": "530678912672195348198342567859761423426853791713924856961537284287419635345286179",
+        "message": "Dummy test output for process-image-test"
+    }
+
+@app.post("/solve-sudoku-test")
+async def solve_sudoku_test():
+    return {
+        "solution": "534678912672195348198342567859761423426853791713924856961537284287419635345286179",
+        "message": "Dummy test output for solve-sudoku-test"
+    }
 
 @app.get("/")
 async def landing_page():
